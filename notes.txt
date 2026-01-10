@@ -1,0 +1,31 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+NOTES:
+--------
+- pin/unpin
+- scroll bar on width?
+* tabs?
+* themed ttk - change
+- full window remember
+- html on/off
+- save/settings buttons
+- CTRL+Z ???
+
