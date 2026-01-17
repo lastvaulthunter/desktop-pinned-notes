@@ -136,7 +136,12 @@ frame_scale.pack(fill='x')
 
 transparency_scale = ttk.Scale(frame_scale, from_=50, to=100, orient="horizontal", length=200, command=set_transparency)
 transparency_scale.set(settings["transparency"])
-transparency_scale.pack(side='top', fill='x', padx=10, pady=5)
+transparency_scale.pack(side='left', fill='x', expand=True, padx=(10,3), pady=5)
+
+settings_image = tk.PhotoImage(file = r"icon_settings.png")
+settings_image_resized = settings_image.subsample(5, 5)
+settings_button = ttk.Button(frame_scale, text = 'Settings', image = settings_image_resized)
+settings_button.pack(side='right', padx=(5, 10), pady=5)
 
 frame_text = ttk.Frame(root)
 frame_text.pack(fill='both', expand=True, padx=10, pady=10)
