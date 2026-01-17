@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2025 lastvaulthunter <lastvaulthunter@gmail.com>
+
 import tkinter as tk
 from tkinter import ttk, Text
 import json
