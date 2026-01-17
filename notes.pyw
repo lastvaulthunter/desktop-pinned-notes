@@ -61,6 +61,26 @@ def apply_dark_theme_if_enabled():
         style.configure('Vertical.TScrollbar',
                        background=bg_color,
                        troughcolor="#3c3c3c")
+    else:
+        # Apply light theme (default system colors)
+        notes.config(
+            bg="white",
+            fg="black",
+            insertbackground="black",
+            selectbackground="#c0c0c0",
+            selectforeground="black"
+        )
+        
+        root.config(bg='SystemButtonFace')
+        
+        style.configure('TFrame', background='SystemButtonFace')
+        style.configure('Horizontal.TScale', 
+                       background='SystemButtonFace',
+                       foreground='black',
+                       troughcolor='SystemButtonFace')
+        style.configure('Vertical.TScrollbar',
+                       background='SystemButtonFace',
+                       troughcolor='SystemButtonFace')
 
 def save_notes():
     # Save notes to notes.txt
@@ -90,6 +110,95 @@ def on_close():
         }
         json.dump(settings, f)
     root.destroy()
+
+def open_settings():
+    global settings_window, theme_var, autosave_var
+    
+    settings_window = tk.Toplevel(root)
+    settings_window.title("Settings")
+    settings_window.geometry("300x200")
+    settings_window.resizable(False, False)
+    settings_window.attributes('-topmost', True)
+    
+    x = root.winfo_x() + (root.winfo_width() // 2) - 150
+    y = root.winfo_y() + (root.winfo_height() // 2) - 100
+    settings_window.geometry(f"+{x}+{y}")
+    
+    theme_var = tk.BooleanVar(value=dark_theme_enabled)
+    autosave_var = tk.IntVar(value=autosave_seconds)
+    
+    if dark_theme_enabled:
+        settings_window.config(bg="#2b2b2b")
+        label_bg = "#2b2b2b"
+        label_fg = "#ffffff"
+    else:
+        settings_window.config(bg='SystemButtonFace')
+        label_bg = 'SystemButtonFace'
+        label_fg = 'black'
+    
+    frame = ttk.Frame(settings_window, padding="20")
+    frame.pack(fill='both', expand=True)
+    
+    theme_frame = ttk.Frame(frame)
+    theme_frame.pack(fill='x', pady=(0, 15))
+    
+    theme_label = tk.Label(theme_frame, text="Dark Theme:", bg=label_bg, fg=label_fg)
+    theme_label.pack(side='left')
+    
+    theme_switch = ttk.Checkbutton(theme_frame, variable=theme_var)
+    theme_switch.pack(side='right')
+    
+    autosave_frame = ttk.Frame(frame)
+    autosave_frame.pack(fill='x', pady=(0, 15))
+    
+    autosave_label = tk.Label(autosave_frame, text="Autosave (seconds):", bg=label_bg, fg=label_fg)
+    autosave_label.pack(side='left')
+    
+    autosave_spinbox = ttk.Spinbox(autosave_frame, from_=1, to=60, width=10, textvariable=autosave_var)
+    autosave_spinbox.pack(side='right')
+    
+    buttons_frame = ttk.Frame(frame)
+    buttons_frame.pack(fill='x', pady=(20, 0))
+    
+    save_button = ttk.Button(buttons_frame, text="Save", command=save_settings)
+    save_button.pack(side='right', padx=(5, 0))
+    
+    cancel_button = ttk.Button(buttons_frame, text="Cancel", command=close_settings)
+    cancel_button.pack(side='right')
+    
+    settings_window.transient(root)
+    settings_window.grab_set()
+    
+
+def save_settings():
+    global dark_theme_enabled, autosave_seconds
+    
+    new_dark_theme = theme_var.get()
+    new_autosave_seconds = autosave_var.get()
+    
+    if new_dark_theme != dark_theme_enabled:
+        dark_theme_enabled = new_dark_theme
+        apply_dark_theme_if_enabled()
+    
+    autosave_seconds = new_autosave_seconds
+    
+    with open(settingsFile, "w") as f:
+        settings = {
+            "x": root.winfo_x(),
+            "y": root.winfo_y(),
+            "width": root.winfo_width(),
+            "height": root.winfo_height(),
+            "transparency": transparency_scale.get(),
+            "autosave_seconds": autosave_seconds,
+            "dark_theme": dark_theme_enabled
+        }
+        json.dump(settings, f)
+    
+    settings_window.destroy()
+    print("Settings saved and applied")
+
+def close_settings():
+    settings_window.destroy()
 
 # Load settings from settings.json or set default values
 try:
@@ -140,7 +249,7 @@ transparency_scale.pack(side='left', fill='x', expand=True, padx=(10,3), pady=5)
 
 settings_image = tk.PhotoImage(file = r"icon_settings.png")
 settings_image_resized = settings_image.subsample(5, 5)
-settings_button = ttk.Button(frame_scale, text = 'Settings', image = settings_image_resized)
+settings_button = ttk.Button(frame_scale, text = 'Settings', image = settings_image_resized, command=open_settings)
 settings_button.pack(side='right', padx=(5, 10), pady=5)
 
 frame_text = ttk.Frame(root)
