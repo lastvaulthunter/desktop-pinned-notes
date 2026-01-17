@@ -6,6 +6,7 @@
 
 ![Screenshot](./Screenshot.png)
 
-### Лицензия
+### License
 
-Этот проект распространяется под лицензией GPL v3. Подробнее в файле [LICENSE](LICENSE).
+This project is licensed under the GNU General Public License v3.0.  
+See the [LICENSE](LICENSE) file for the full text.
