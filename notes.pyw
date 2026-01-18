@@ -7,16 +7,6 @@ import json
 from datetime import datetime
 import sys, os
 
-# TODO:
-# - pin/unpin
-# - scroll bar on width?
-# * tabs?
-# * themed ttk - change
-# - full window remember
-# - html on/off
-# - save/settings buttons
-# - CTRL+Z ???
-
 default_autosave_value_in_sec = 3
 
 pyFile = sys.argv[0]
@@ -431,7 +421,6 @@ frame_text.pack(fill='both', expand=True, padx=10, pady=10)
 notes = Text(frame_text, wrap=tk.WORD)
 notes.pack(fill='both', expand=True, side='left')
 
-# Add a ttk vertical scrollbar to the right of the Text widget
 scrollbar = ttk.Scrollbar(frame_text, command=notes.yview)
 scrollbar.pack(side="right", fill="y")
 notes.config(yscrollcommand=scrollbar.set)
@@ -450,7 +439,7 @@ apply_dark_theme_if_enabled()
 # Bind the on_close function to the window close event
 root.protocol("WM_DELETE_WINDOW", on_close)
 
-# Enable copy/paste functionality on not English keyboard layout (Ctrl+C and Ctrl+V + Ctrl+X)
+# Enable copy/paste functionality on not English keyboard layout (Ctrl+C / Ctrl+V / Ctrl+X)
 def _onKeyRelease(event):
     ctrl  = (event.state & 0x4) != 0
     if event.keycode==88 and  ctrl and event.keysym.lower() != "x": 
@@ -464,8 +453,8 @@ def _onKeyRelease(event):
 
 notes.bind_all("<Key>", _onKeyRelease, "+")
 
-root.title("Notes")  # Set the title to "Notes"
-root.minsize(150, 75) # Width, Height
+root.title("Notes")
+root.minsize(150, 75)
 
 # Schedule the initial save after autosave_seconds
 root.after(autosave_seconds * 1000, save_notes)
