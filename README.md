@@ -10,10 +10,7 @@ Need to keep notes visible while working? This app creates a small, floating not
 - dark/light theme support (@polienko)
 - autosave notes every X seconds (setting available for change)
 
-![Screenshot](./Screenshot_light.png)
-![Screenshot](./Screenshot_settings.png)
-![Screenshot](./Screenshot_dark.png)
-
+![Screenshot](./Screenshot.png)
 
 ### License
 
